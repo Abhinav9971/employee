@@ -1,0 +1,104 @@
+{% extends 'base.html' %} {% block title %}Employee List{% endblock %} {% block
+content %}
+<div
+  class="bg-gradient-to-br from-white to-gray-50 p-8 rounded-xl shadow-2xl mx-auto border border-gray-100"
+>
+  <h1
+    class="text-4xl font-extrabold text-gray-900 mb-8 text-center tracking-tight"
+  >
+    Current Employees
+  </h1>
+
+  {% if employees %}
+  <div class="overflow-x-auto rounded-lg shadow-lg border border-gray-200">
+    <table class="min-w-full bg-white">
+      <thead class="bg-indigo-600 text-white">
+        <tr>
+          <th
+            class="py-3 px-6 text-left text-sm font-semibold uppercase tracking-wider rounded-tl-lg"
+          >
+            ID
+          </th>
+          <th
+            class="py-3 px-6 text-left text-sm font-semibold uppercase tracking-wider"
+          >
+            Name
+          </th>
+          <th
+            class="py-3 px-6 text-left text-sm font-semibold uppercase tracking-wider"
+          >
+            Position
+          </th>
+          <th
+            class="py-3 px-6 text-left text-sm font-semibold uppercase tracking-wider"
+          >
+            Department
+          </th>
+          <th
+            class="py-3 px-6 text-left text-sm font-semibold uppercase tracking-wider"
+          >
+            Salary
+          </th>
+          <th
+            class="py-3 px-6 text-center text-sm font-semibold uppercase tracking-wider rounded-tr-lg"
+          >
+            Actions
+          </th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200">
+        {% for employee in employees %}
+        <tr class="hover:bg-gray-50 transition duration-150 ease-in-out">
+          <td class="py-4 px-6 whitespace-nowrap text-gray-800">
+            {{ employee.id }}
+          </td>
+          <td class="py-4 px-6 whitespace-nowrap text-gray-800">
+            {{ employee.name }}
+          </td>
+          <td class="py-4 px-6 whitespace-nowrap text-gray-800">
+            {{ employee.position }}
+          </td>
+          <td class="py-4 px-6 whitespace-nowrap text-gray-800">
+            {{ employee.department }}
+          </td>
+          <td class="py-4 px-6 whitespace-nowrap text-gray-800">
+            ${{ "{:,.2f}".format(employee.salary) }}
+          </td>
+          <td class="py-4 px-6 text-center">
+            <div class="flex items-center justify-center space-x-3">
+              <a
+                href="{{ url_for('edit_employee', employee_id=employee.id) }}"
+                class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md shadow-sm hover:shadow-md transition duration-300 ease-in-out transform hover:-translate-y-0.5 text-sm"
+              >
+                Edit
+              </a>
+              <form
+                action="{{ url_for('delete_employee', employee_id=employee.id) }}"
+                method="POST"
+                class="inline-block"
+                onsubmit="return confirm('Are you sure you want to delete {{ employee.name }}? This action cannot be undone.');"
+              >
+                <button
+                  type="submit"
+                  class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-md shadow-sm hover:shadow-md transition duration-300 ease-in-out transform hover:-translate-y-0.5 text-sm"
+                >
+                  Delete
+                </button>
+              </form>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div
+    class="mt-8 p-10 bg-indigo-50 border border-indigo-200 rounded-lg text-indigo-800 text-center text-xl font-medium shadow-inner"
+  >
+    <p class="mb-4">It looks like there are no employees in the system yet!</p>
+    <p>Click the "Add Employee" button in the navigation bar to get started.</p>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
